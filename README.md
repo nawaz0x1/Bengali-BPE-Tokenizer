@@ -69,6 +69,57 @@ This project addresses the problem by training BPE **directly on Bengali
 text**, producing a vocabulary where common Bengali morphemes become single
 tokens.
 
+## Benchmark: Bengali BPE vs tiktoken
+
+Measured on `examples/corpus.txt` (3,795 chars, 427 Bengali words).
+Reproduce with:
+
+```bash
+pip install tiktoken
+python benchmark.py
+```
+
+### Token count - full corpus (lower is better)
+
+| Tokenizer | Tokens | vs Bengali-BPE |
+| --------- | ------: | -------------- |
+| **Bengali-BPE (ours)** | **1,961** | - |
+| tiktoken cl100k / GPT-4 | 4,712 | 2.4× more |
+| tiktoken GPT-2 | 7,663 | 3.9× more |
+
+### Compression ratio - chars per token (higher is better)
+
+| Tokenizer | Chars / token |
+| --------- | ------------: |
+| **Bengali-BPE (ours)** | **1.94** |
+| tiktoken cl100k / GPT-4 | 0.81 |
+| tiktoken GPT-2 | 0.50 |
+
+### Average tokens per Bengali word (lower is better)
+
+| Tokenizer | Tokens / word |
+| --------- | ------------: |
+| **Bengali-BPE (ours)** | **4.57** |
+| tiktoken cl100k / GPT-4 | 8.71 |
+| tiktoken GPT-2 | 13.65 |
+
+### Word-level spotlight - worst cases for GPT-2
+
+| Bengali word | Bengali-BPE | GPT-2 | GPT-4 | Saving vs GPT-2 |
+| ------------ | ----------: | ----: | ----: | --------------- |
+| গুরুত্বপূর্ণ | **1** | 29 | 18 | **29× fewer** |
+| বিশ্ববিদ্যালয় | **1** | 30 | 18 | **30× fewer** |
+| উল্লেখযোগ্যভাবে | 12 | 35 | 22 | 2.9× fewer |
+| মুক্তিযুদ্ধের | 9 | 31 | 18 | 3.4× fewer |
+| গণপ্রজাতন্ত্রী | 12 | 32 | 19 | 2.7× fewer |
+| বিশ্বসাহিত্যে | 7 | 29 | 15 | 4.1× fewer |
+| সম্প্রদায়ের | 8 | 27 | 16 | 3.4× fewer |
+
+> **Takeaway:** Bengali-BPE uses **3.9× fewer tokens** than GPT-2 and **2.4× fewer**
+> than GPT-4 on the same Bengali corpus. Common words like `গুরুত্বপূর্ণ`
+> cost a single token instead of 29 - directly reducing context window
+> usage, inference cost, and sequence length for downstream models.
+
 ## Installation
 
 ### From source (recommended)
@@ -141,7 +192,7 @@ python bpe.py inspect \
 
 ```
 ──────────────────────────────────────────────────────────
-  BPE Inspection — 'বাংলাদেশ'
+  BPE Inspection - 'বাংলাদেশ'
 ──────────────────────────────────────────────────────────
 
   Step 0  [            Initial             ]  →  ব + া + ং + ল + া + দ + ে + শ + </w>
@@ -287,7 +338,7 @@ bengali-bpe/
 This Tokenizer operates exclusively on **Unicode code points** (Python `str`).
 It never touches raw UTF-8 bytes. This means:
 
-- `list("বাং")` → `['ব', 'া', 'ং']` — always correct for any script.
+- `list("বাং")` → `['ব', 'া', 'ং']` - always correct for any script.
 - No byte-splitting that would break multi-byte characters.
 - All regex operations use `re.UNICODE` flag.
 
@@ -295,8 +346,8 @@ It never touches raw UTF-8 bytes. This means:
 
 | Code point     | Character | Description                                  |
 | -------------- | --------- | -------------------------------------------- |
-| U+09CD | ্ | Virama / Hasanta — suppresses inherent vowel |
-| U+0982 | ং | Anusvara — nasalisation |
+| U+09CD | ্ | Virama / Hasanta - suppresses inherent vowel |
+| U+0982 | ং | Anusvara - nasalisation |
 | U+0983 | ঃ | Visarga |
 | U+0981 | ঁ | Chandrabindu |
 | U+09BC | ় | Nukta |
@@ -314,7 +365,7 @@ consonant + virama (্) + consonant
 Example: `ক` + `্` + `ষ` = `ক্ষ` (three code points, rendered as one glyph).
 
 The Tokenizer preserves virama and learns to merge conjuncts as natural
-subword units — no special handling required.
+subword units - no special handling required.
 
 ### NFC normalisation
 
