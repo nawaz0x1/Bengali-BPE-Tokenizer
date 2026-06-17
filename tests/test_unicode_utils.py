@@ -29,6 +29,7 @@ from bpe.unicode_utils import (
 
 # ── normalize ─────────────────────────────────────────────────────────────────
 
+
 class TestNormalize:
     def test_nfc_preserves_bengali(self):
         text = "বাংলাদেশ"
@@ -50,13 +51,14 @@ class TestNormalize:
 
     def test_latin_nfc(self):
         # café composed vs decomposed
-        composed = "caf\u00e9"       # é as single code point
-        decomposed = "cafe\u0301"    # e + combining acute
+        composed = "caf\u00e9"  # é as single code point
+        decomposed = "cafe\u0301"  # e + combining acute
         assert normalize(composed, "NFC") == composed
         assert normalize(decomposed, "NFC") == composed
 
 
 # ── normalize_whitespace ──────────────────────────────────────────────────────
+
 
 class TestNormalizeWhitespace:
     def test_collapses_spaces(self):
@@ -82,6 +84,7 @@ class TestNormalizeWhitespace:
 
 # ── remove_zero_width_chars ───────────────────────────────────────────────────
 
+
 class TestRemoveZeroWidth:
     def test_removes_zwnj(self):
         text = "ক্\u200cষ"
@@ -98,6 +101,7 @@ class TestRemoveZeroWidth:
 
 
 # ── is_bengali ────────────────────────────────────────────────────────────────
+
 
 class TestIsBengali:
     def test_bengali_consonant(self):
@@ -127,9 +131,10 @@ class TestIsBengali:
 
 # ── is_bengali_virama ─────────────────────────────────────────────────────────
 
+
 class TestIsBengaliVirama:
     def test_virama(self):
-        assert is_bengali_virama("\u09CD") is True
+        assert is_bengali_virama("\u09cd") is True
 
     def test_not_virama(self):
         assert is_bengali_virama("ব") is False
@@ -138,20 +143,22 @@ class TestIsBengaliVirama:
 
 # ── is_combining ─────────────────────────────────────────────────────────────
 
+
 class TestIsCombining:
     def test_bengali_virama_is_combining(self):
         # U+09CD has category Mn (non-spacing mark)
-        assert is_combining("\u09CD") is True
+        assert is_combining("\u09cd") is True
 
     def test_bengali_dependent_vowel_aa(self):
         # U+09BE (আ-কার) has category Mc (spacing combining)
-        assert is_combining("\u09BE") is True
+        assert is_combining("\u09be") is True
 
     def test_latin_not_combining(self):
         assert is_combining("a") is False
 
 
 # ── is_digit ──────────────────────────────────────────────────────────────────
+
 
 class TestIsDigit:
     def test_ascii_digit(self):
@@ -168,6 +175,7 @@ class TestIsDigit:
 
 
 # ── is_whitespace ─────────────────────────────────────────────────────────────
+
 
 class TestIsWhitespace:
     def test_space(self):
@@ -187,6 +195,7 @@ class TestIsWhitespace:
 
 
 # ── split_chars ───────────────────────────────────────────────────────────────
+
 
 class TestSplitChars:
     def test_bengali_word(self):
@@ -217,6 +226,7 @@ class TestSplitChars:
 
 
 # ── pretokenize ───────────────────────────────────────────────────────────────
+
 
 class TestPretokenize:
     def test_bengali_sentence(self):
@@ -260,6 +270,7 @@ class TestPretokenizeWords:
 
 # ── corpus_unicode_stats ──────────────────────────────────────────────────────
 
+
 class TestCorpusUnicodeStats:
     def test_bengali_counting(self):
         text = "বাংলাদেশ"
@@ -281,6 +292,7 @@ class TestCorpusUnicodeStats:
 
 
 # ── char_frequency ────────────────────────────────────────────────────────────
+
 
 class TestCharFrequency:
     def test_counts_correctly(self):

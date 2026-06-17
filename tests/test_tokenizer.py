@@ -36,6 +36,7 @@ def _train_and_save(tmp_path: Path, vocab_size: int = 80) -> Path:
 
 # ── BPETokenizer integration ──────────────────────────────────────────────────
 
+
 class TestBPETokenizerIntegration:
     @pytest.fixture
     def tokenizer(self, tmp_path):
@@ -110,6 +111,7 @@ class TestBPETokenizerIntegration:
 
 # ── Encoder unit tests ────────────────────────────────────────────────────────
 
+
 class TestBPEEncoder:
     @pytest.fixture
     def simple_encoder(self):
@@ -118,9 +120,7 @@ class TestBPEEncoder:
         for ch in ["a", "b", "c", "ab", "abc", "</w>", "ab</w>", "abc</w>"]:
             vocab.add_token(ch)
         merges = [("a", "b"), ("ab", "c"), ("ab", "</w>"), ("abc", "</w>")]
-        return BPEEncoder(
-            vocabulary=vocab, merges=merges, end_of_word_suffix="</w>"
-        )
+        return BPEEncoder(vocabulary=vocab, merges=merges, end_of_word_suffix="</w>")
 
     def test_encode_abc(self, simple_encoder):
         ids = simple_encoder.encode("abc")
@@ -161,6 +161,7 @@ class TestBPEEncoder:
 
 # ── Decoder unit tests ────────────────────────────────────────────────────────
 
+
 class TestBPEDecoder:
     @pytest.fixture
     def decoder_with_vocab(self):
@@ -193,6 +194,7 @@ class TestBPEDecoder:
 
 
 # ── _merge_symbols helper ─────────────────────────────────────────────────────
+
 
 class TestMergeSymbols:
     def test_basic_merge(self):

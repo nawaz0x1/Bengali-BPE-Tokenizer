@@ -492,8 +492,7 @@ def _plot_merge_frequencies(model: BPEModel) -> None:
         import matplotlib.pyplot as plt  # type: ignore
     except ImportError:
         print(
-            "\n  matplotlib is not installed. "
-            "Run: pip install matplotlib",
+            "\n  matplotlib is not installed. " "Run: pip install matplotlib",
             file=sys.stderr,
         )
         return

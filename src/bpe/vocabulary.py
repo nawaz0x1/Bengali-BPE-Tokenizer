@@ -28,10 +28,10 @@ from typing import Dict, Iterator, List, Optional, Set, Tuple
 
 # ── Special tokens ────────────────────────────────────────────────────────────
 
-PAD_TOKEN: str = "<pad>"   # padding / ignored position
-UNK_TOKEN: str = "<unk>"   # unknown / out-of-vocabulary token
-BOS_TOKEN: str = "<bos>"   # beginning-of-sequence marker
-EOS_TOKEN: str = "<eos>"   # end-of-sequence marker
+PAD_TOKEN: str = "<pad>"  # padding / ignored position
+UNK_TOKEN: str = "<unk>"  # unknown / out-of-vocabulary token
+BOS_TOKEN: str = "<bos>"  # beginning-of-sequence marker
+EOS_TOKEN: str = "<eos>"  # end-of-sequence marker
 
 DEFAULT_SPECIAL_TOKENS: List[str] = [PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN]
 
@@ -63,9 +63,7 @@ class Vocabulary:
     # ── Construction helpers ──────────────────────────────────────────────────
 
     @classmethod
-    def from_special_tokens(
-        cls, special_tokens: Optional[List[str]] = None
-    ) -> "Vocabulary":
+    def from_special_tokens(cls, special_tokens: Optional[List[str]] = None) -> "Vocabulary":
         """Create a :class:`Vocabulary` pre-populated with special tokens.
 
         Args:
@@ -202,9 +200,7 @@ class Vocabulary:
             Dict with keys ``mean``, ``max``, ``min``, ``median``,
             ``total_tokens``.
         """
-        lengths = [
-            len(t) for t in self.token_to_id if t not in self.special_tokens
-        ]
+        lengths = [len(t) for t in self.token_to_id if t not in self.special_tokens]
         if not lengths:
             return {}
         lengths_sorted = sorted(lengths)
@@ -245,9 +241,5 @@ class Vocabulary:
         with open(path, "w", newline="", encoding="utf-8") as fh:
             writer = csv.writer(fh)
             writer.writerow(["id", "token", "length", "is_special"])
-            for token, token_id in sorted(
-                self.token_to_id.items(), key=lambda kv: kv[1]
-            ):
-                writer.writerow(
-                    [token_id, token, len(token), token in self.special_tokens]
-                )
+            for token, token_id in sorted(self.token_to_id.items(), key=lambda kv: kv[1]):
+                writer.writerow([token_id, token, len(token), token in self.special_tokens])

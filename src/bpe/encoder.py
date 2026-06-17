@@ -78,15 +78,11 @@ class BPEEncoder:
         self._normalize_ws = normalize_ws
 
         # Build merge rank map: pair → rank (lower = applied earlier)
-        self._bpe_ranks: MergeRankMap = {
-            pair: rank for rank, pair in enumerate(merges)
-        }
+        self._bpe_ranks: MergeRankMap = {pair: rank for rank, pair in enumerate(merges)}
 
         # Word-level cache (bound method cannot use @lru_cache directly,
         # so we store a module-level cached function per instance)
-        self._encode_word_cached = lru_cache(maxsize=cache_size)(
-            self._encode_word_uncached
-        )
+        self._encode_word_cached = lru_cache(maxsize=cache_size)(self._encode_word_uncached)
 
     # ── Public API ────────────────────────────────────────────────────────────
 
@@ -129,9 +125,7 @@ class BPEEncoder:
             token_strs.extend(self._encode_word_cached(word))
         return token_strs
 
-    def encode_with_trace(
-        self, word: str
-    ) -> List[Tuple[List[str], Optional[Tuple[str, str]]]]:
+    def encode_with_trace(self, word: str) -> List[Tuple[List[str], Optional[Tuple[str, str]]]]:
         """Encode a single *word* and record each merge step.
 
         Returns a list of ``(symbols, merged_pair)`` pairs where:
@@ -154,9 +148,7 @@ class BPEEncoder:
         else:
             symbols = split_chars(word)
 
-        trace: List[Tuple[List[str], Optional[Tuple[str, str]]]] = [
-            (list(symbols), None)
-        ]
+        trace: List[Tuple[List[str], Optional[Tuple[str, str]]]] = [(list(symbols), None)]
 
         while len(symbols) > 1:
             best_rank = float("inf")

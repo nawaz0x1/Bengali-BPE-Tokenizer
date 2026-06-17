@@ -33,6 +33,7 @@ SMALL_CORPUS = "আ আ ব ব ব"  # minimal corpus for quick tests
 
 # ── TrainerConfig ─────────────────────────────────────────────────────────────
 
+
 class TestTrainerConfig:
     def test_defaults(self):
         cfg = TrainerConfig()
@@ -48,6 +49,7 @@ class TestTrainerConfig:
 
 
 # ── BPETrainer ────────────────────────────────────────────────────────────────
+
 
 class TestBPETrainer:
     def _make_trainer(self, vocab_size=50, min_frequency=1) -> BPETrainer:
@@ -144,6 +146,7 @@ class TestBPETrainer:
 
 # ── BPEModel save / load ──────────────────────────────────────────────────────
 
+
 class TestBPEModelSaveLoad:
     def _train(self, corpus=BENGALI_CORPUS, vocab_size=40):
         cfg = TrainerConfig(vocab_size=vocab_size, min_frequency=1, show_progress=False)
@@ -198,9 +201,7 @@ class TestBPEModelSaveLoad:
         model.save(tmp_path)
         content = (tmp_path / "vocab.json").read_text(encoding="utf-8")
         # Bengali chars should appear as-is, not as \uXXXX escapes
-        assert "ব" in content or any(
-            is_bengali_in_content(content) for _ in [1]
-        )
+        assert "ব" in content or any(is_bengali_in_content(content) for _ in [1])
 
 
 def is_bengali_in_content(content: str) -> bool:
@@ -209,6 +210,7 @@ def is_bengali_in_content(content: str) -> bool:
 
 
 # ── _apply_merge (internal) ───────────────────────────────────────────────────
+
 
 class TestApplyMerge:
     """Tests for the incremental merge update logic."""

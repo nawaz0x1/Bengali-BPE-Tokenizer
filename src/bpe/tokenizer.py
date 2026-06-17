@@ -143,9 +143,7 @@ class BPETokenizer:
 
     # ── Inspection ────────────────────────────────────────────────────────────
 
-    def inspect(
-        self, word: str
-    ) -> List[Tuple[List[str], Optional[Tuple[str, str]]]]:
+    def inspect(self, word: str) -> List[Tuple[List[str], Optional[Tuple[str, str]]]]:
         """Trace the step-by-step BPE merge sequence for *word*.
 
         Returns a list of ``(symbols, merged_pair)`` tuples (one per merge

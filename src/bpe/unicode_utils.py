@@ -52,28 +52,33 @@ BENGALI_BLOCK_START: int = 0x0980
 BENGALI_BLOCK_END: int = 0x09FF
 
 # Specific character constants
-BENGALI_VIRAMA: str = "\u09CD"       # ্  (virama / hasanta)
-BENGALI_ANUSVARA: str = "\u0982"     # ং
-BENGALI_VISARGA: str = "\u0983"      # ঃ
-BENGALI_CHANDRABINDU: str = "\u0981" # ঁ
-BENGALI_NUKTA: str = "\u09BC"        # ়
+BENGALI_VIRAMA: str = "\u09cd"  # ্  (virama / hasanta)
+BENGALI_ANUSVARA: str = "\u0982"  # ং
+BENGALI_VISARGA: str = "\u0983"  # ঃ
+BENGALI_CHANDRABINDU: str = "\u0981"  # ঁ
+BENGALI_NUKTA: str = "\u09bc"  # ়
 
-ZERO_WIDTH_NON_JOINER: str = "\u200C"  # ZWNJ
-ZERO_WIDTH_JOINER: str = "\u200D"      # ZWJ
-ZERO_WIDTH_SPACE: str = "\u200B"       # ZWSP
+ZERO_WIDTH_NON_JOINER: str = "\u200c"  # ZWNJ
+ZERO_WIDTH_JOINER: str = "\u200d"  # ZWJ
+ZERO_WIDTH_SPACE: str = "\u200b"  # ZWSP
 
 # Character sets for category checks
-BENGALI_INDEPENDENT_VOWELS: frozenset[str] = frozenset(
-    chr(c) for c in range(0x0985, 0x0995)
-)
-BENGALI_CONSONANTS: frozenset[str] = frozenset(
-    chr(c) for c in range(0x0995, 0x09BA)
-)
+BENGALI_INDEPENDENT_VOWELS: frozenset[str] = frozenset(chr(c) for c in range(0x0985, 0x0995))
+BENGALI_CONSONANTS: frozenset[str] = frozenset(chr(c) for c in range(0x0995, 0x09BA))
 BENGALI_DEPENDENT_VOWELS: frozenset[str] = frozenset(
     chr(c)
     for c in [
-        0x09BE, 0x09BF, 0x09C0, 0x09C1, 0x09C2,
-        0x09C3, 0x09C4, 0x09C7, 0x09C8, 0x09CB, 0x09CC,
+        0x09BE,
+        0x09BF,
+        0x09C0,
+        0x09C1,
+        0x09C2,
+        0x09C3,
+        0x09C4,
+        0x09C7,
+        0x09C8,
+        0x09CB,
+        0x09CC,
     ]
 )
 
@@ -146,8 +151,7 @@ def remove_zero_width_chars(text: str) -> str:
         Cleaned text.
     """
     return (
-        text
-        .replace(ZERO_WIDTH_NON_JOINER, "")
+        text.replace(ZERO_WIDTH_NON_JOINER, "")
         .replace(ZERO_WIDTH_JOINER, "")
         .replace(ZERO_WIDTH_SPACE, "")
     )
@@ -203,9 +207,9 @@ def is_digit(char: str) -> bool:
 _PUNCT_CHARS = r".,!?;:'\"()\[\]{}<>\/\\@#$%^&*+=|`~"
 _PRETOKENIZE_RE = re.compile(
     r"\s+"
-    r"|[\u0964\u0965]"                           # Bengali danda / double danda
-    r"|[0-9]+"                                   # ASCII numeral run
-    r"|[\u09E6-\u09EF]+"                         # Bengali numeral run
+    r"|[\u0964\u0965]"  # Bengali danda / double danda
+    r"|[0-9]+"  # ASCII numeral run
+    r"|[\u09E6-\u09EF]+"  # Bengali numeral run
     r"|[.,!?;:'\"()\[\]{}<>\/\\@#$%^&*+=|`~]+"  # ASCII punctuation cluster
     r"|[^\s.,!?;:'\"()\[\]{}<>\/\\@#$%^&*+=|`~\u0964\u0965\u09E6-\u09EF]+",  # word
     re.UNICODE,

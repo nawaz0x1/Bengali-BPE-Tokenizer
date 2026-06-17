@@ -107,9 +107,7 @@ class TrainerConfig:
     end_of_word_suffix: str = "</w>"
     normalization: str = "NFC"
     normalize_whitespace: bool = True
-    special_tokens: List[str] = field(
-        default_factory=lambda: list(DEFAULT_SPECIAL_TOKENS)
-    )
+    special_tokens: List[str] = field(default_factory=lambda: list(DEFAULT_SPECIAL_TOKENS))
     language: str = "bengali"
     show_progress: bool = True
     log_interval: int = 500
@@ -262,8 +260,7 @@ class BPEModel:
         )
 
         merge_freq_history = [
-            (tuple(entry["pair"]), entry["frequency"])
-            for entry in meta.get("top_merges", [])
+            (tuple(entry["pair"]), entry["frequency"]) for entry in meta.get("top_merges", [])
         ]
 
         return cls(
@@ -298,9 +295,7 @@ class BPETrainer:
 
     def __init__(self, config: Optional[TrainerConfig] = None) -> None:
         self.config: TrainerConfig = config or TrainerConfig()
-        self.vocabulary: Vocabulary = Vocabulary.from_special_tokens(
-            self.config.special_tokens
-        )
+        self.vocabulary: Vocabulary = Vocabulary.from_special_tokens(self.config.special_tokens)
         self.merges: MergeList = []
         self._merge_freq_history: List[Tuple[Tuple[str, str], int]] = []
 
@@ -316,9 +311,7 @@ class BPETrainer:
             A :class:`BPEModel` containing the trained vocabulary and merges.
         """
         start_time = time.perf_counter()
-        logger.info(
-            "BPE training started  (target vocab size: %d)", self.config.vocab_size
-        )
+        logger.info("BPE training started  (target vocab size: %d)", self.config.vocab_size)
 
         # ── Step 1: normalise ─────────────────────────────────────────────────
         text = self._normalize_text(text)
@@ -361,9 +354,7 @@ class BPETrainer:
 
             # Stop if only singleton pairs remain (no compression possible)
             if best_freq < 2:
-                logger.info(
-                    "Stopping early: best pair frequency = %d (< 2)", best_freq
-                )
+                logger.info("Stopping early: best pair frequency = %d (< 2)", best_freq)
                 break
 
             new_token = best_pair[0] + best_pair[1]
@@ -432,9 +423,7 @@ class BPETrainer:
         """
         freq: Counter = Counter(pretokenize_words(text))
         if self.config.min_frequency > 1:
-            freq = Counter(
-                {w: c for w, c in freq.items() if c >= self.config.min_frequency}
-            )
+            freq = Counter({w: c for w, c in freq.items() if c >= self.config.min_frequency})
         return dict(freq)
 
     def _init_char_vocab(self, word_freqs: Dict[str, int]) -> None:
@@ -468,9 +457,7 @@ class BPETrainer:
         result: WordFreqDict = {}
         for word, freq in word_freqs.items():
             symbols: Word = (
-                tuple(split_chars(word)) + (suffix,)
-                if suffix
-                else tuple(split_chars(word))
+                tuple(split_chars(word)) + (suffix,) if suffix else tuple(split_chars(word))
             )
             result[symbols] = result.get(symbols, 0) + freq
         return result
@@ -552,8 +539,7 @@ class BPETrainer:
 
             # Check whether (a, b) actually occurs as adjacent pair.
             has_pair = any(
-                symbols[i] == a and symbols[i + 1] == b
-                for i in range(len(symbols) - 1)
+                symbols[i] == a and symbols[i + 1] == b for i in range(len(symbols) - 1)
             )
             if not has_pair:
                 new_vocab[symbols] = new_vocab.get(symbols, 0) + freq

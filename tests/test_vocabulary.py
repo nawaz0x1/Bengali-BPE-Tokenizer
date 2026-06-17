@@ -181,9 +181,9 @@ class TestSaveLoad:
 class TestStatistics:
     def test_token_length_stats(self):
         v = Vocabulary.from_special_tokens()
-        v.add_token("ব")       # length 1
-        v.add_token("বা")      # length 2
-        v.add_token("বাং")     # length 3
+        v.add_token("ব")  # length 1
+        v.add_token("বা")  # length 2
+        v.add_token("বাং")  # length 3
 
         stats = v.token_length_stats()
         assert stats["max"] == 3
