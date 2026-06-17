@@ -16,7 +16,7 @@ Rare Words with Subword Units"):
         to guarantee deterministic training.
     c.  Merge every occurrence of that pair in the word-frequency dictionary.
     d.  Update pair-frequency counts **incrementally** (only the counts
-        affected by the merge are changed — O(k·C) per step where k is
+        affected by the merge are changed - O(k·C) per step where k is
         average word length and C is the number of affected word types).
     e.  Add the new token to the vocabulary.
 
@@ -127,7 +127,7 @@ class BPEModel:
     Attributes:
         vocabulary: The full token vocabulary.
         merges: Ordered list of merge rules as ``(left, right)`` pairs.
-        merge_freq_history: Frequency of the merged pair at each step —
+        merge_freq_history: Frequency of the merged pair at each step -
             useful for analysis.
         config: The :class:`TrainerConfig` used during training.
         training_time: Wall-clock seconds spent in :meth:`BPETrainer.train`.
@@ -150,10 +150,10 @@ class BPEModel:
 
         Creates three files:
 
-        * ``vocab.json``    — token → ID mapping and special-token list.
-        * ``merges.txt``    — one merge rule per line: ``LEFT RIGHT``
+        * ``vocab.json``    - token → ID mapping and special-token list.
+        * ``merges.txt``    - one merge rule per line: ``LEFT RIGHT``
           (tab-separated for robustness against tokens that contain spaces).
-        * ``metadata.json`` — training statistics and configuration.
+        * ``metadata.json`` - training statistics and configuration.
 
         Args:
             output_dir: Directory to write files to.  Created if absent.
@@ -164,7 +164,7 @@ class BPEModel:
         # vocab.json
         self.vocabulary.save(output_dir / "vocab.json")
 
-        # merges.txt — tab-separated so spaces inside tokens are unambiguous
+        # merges.txt - tab-separated so spaces inside tokens are unambiguous
         merges_path = output_dir / "merges.txt"
         with open(merges_path, "w", encoding="utf-8") as fh:
             fh.write("#version: 0.2\n")
@@ -320,7 +320,7 @@ class BPETrainer:
         # ── Step 2: Unicode statistics ────────────────────────────────────────
         unicode_stats = corpus_unicode_stats(text)
         logger.info(
-            "Unicode stats — Bengali: %d, Latin: %d, Unique codepoints: %d",
+            "Unicode stats - Bengali: %d, Latin: %d, Unique codepoints: %d",
             unicode_stats["bengali_chars"],
             unicode_stats["latin_chars"],
             unicode_stats["unique_codepoints"],
@@ -387,7 +387,7 @@ class BPETrainer:
 
         elapsed = time.perf_counter() - start_time
         logger.info(
-            "Training complete — %d merges in %s (final vocab size: %d)",
+            "Training complete - %d merges in %s (final vocab size: %d)",
             merge_count,
             _fmt_time(elapsed),
             len(self.vocabulary),
@@ -525,7 +525,7 @@ class BPETrainer:
             pair_freqs: Current pair → frequency mapping (mutated in place).
 
         Returns:
-            ``(new_vocab, pair_freqs)`` — updated data structures.
+            ``(new_vocab, pair_freqs)`` - updated data structures.
         """
         a, b = pair
         merged = a + b

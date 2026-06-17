@@ -88,7 +88,7 @@ class BPEDecoder:
         for tid in token_ids:
             token: Optional[str] = self._vocab.get_token(tid)
             if token is None:
-                logger.debug("Unknown token ID %d — skipped", tid)
+                logger.debug("Unknown token ID %d - skipped", tid)
                 continue
             if token in self._vocab.special_tokens:
                 continue

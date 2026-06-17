@@ -48,7 +48,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="bpe",
         description=(
-            "Bengali BPE Tokenizer — Byte Pair Encoding from scratch.\n"
+            "Bengali BPE Tokenizer - Byte Pair Encoding from scratch.\n"
             "Supports Bengali (Bangla) and any UTF-8 language."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -288,7 +288,7 @@ def _cmd_train(args: argparse.Namespace) -> None:
     if not corpus_path.exists():
         _die(f"Corpus file not found: {corpus_path}")
 
-    print_banner(f"BPE Training — {corpus_path.name}")
+    print_banner(f"BPE Training - {corpus_path.name}")
 
     text = read_text_file(corpus_path)
     print(f"  Corpus size : {format_number(len(text))} characters")
@@ -366,7 +366,7 @@ def _cmd_stats(args: argparse.Namespace) -> None:
     model_dir = Path(args.model)
     model = BPEModel.load(model_dir)
 
-    print_banner(f"Model Statistics — {model_dir.resolve()}")
+    print_banner(f"Model Statistics - {model_dir.resolve()}")
 
     # ── Basic info ────────────────────────────────────────────────────────────
     print("\n  TRAINING CONFIGURATION")
@@ -460,7 +460,7 @@ def _cmd_inspect(args: argparse.Namespace) -> None:
     if " " in word:
         _die("--word must be a single word without spaces.")
 
-    print_banner(f"BPE Inspection — {word!r}")
+    print_banner(f"BPE Inspection - {word!r}")
 
     tokenizer = BPETokenizer(model_dir)
     trace = tokenizer.inspect(word)
@@ -502,7 +502,7 @@ def _plot_merge_frequencies(model: BPEModel) -> None:
     plt.yscale("log")
     plt.xlabel("Merge iteration")
     plt.ylabel("Pair frequency (log scale)")
-    plt.title(f"BPE Merge Frequency — {model.config.language}")
+    plt.title(f"BPE Merge Frequency - {model.config.language}")
     plt.tight_layout()
     plt.show()
 

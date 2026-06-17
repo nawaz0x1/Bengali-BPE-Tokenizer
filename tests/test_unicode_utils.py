@@ -75,7 +75,7 @@ class TestNormalizeWhitespace:
         assert normalize_whitespace(text) == "আমি বাংলাদেশে থাকি"
 
     def test_non_breaking_space(self):
-        # U+00A0 is a non-breaking space — should be collapsed
+        # U+00A0 is a non-breaking space - should be collapsed
         assert normalize_whitespace("a\u00a0b") == "a b"
 
 

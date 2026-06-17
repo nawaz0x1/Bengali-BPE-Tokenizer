@@ -16,7 +16,7 @@ from typing import Any, Dict, Generator, List, Optional
 
 # ── Logging setup ─────────────────────────────────────────────────────────────
 
-_LOG_FORMAT = "%(asctime)s  %(levelname)-8s  %(name)s — %(message)s"
+_LOG_FORMAT = "%(asctime)s  %(levelname)-8s  %(name)s - %(message)s"
 _LOG_DATE_FORMAT = "%H:%M:%S"
 
 

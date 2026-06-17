@@ -17,7 +17,7 @@ Independent vowels    0985-0994  স্বরবর্ণ
 Consonants            0995-09B9  ব্যঞ্জনবর্ণ
 Nukta                 09BC       Modifies consonants (like "ড়" = ড + ়)
 Dependent vowels      09BE-09CC  কার (vowel signs attached to consonants)
-Virama / Hasanta      09CD       ্ — suppresses the inherent /a/ vowel;
+Virama / Hasanta      09CD       ্ - suppresses the inherent /a/ vowel;
                                  consonant + virama + consonant = conjunct
 Anusvara              0982       ং (nasalisation)
 Visarga               0983       ঃ (aspiration)
@@ -31,12 +31,12 @@ Conjuncts (যুক্তাক্ষর)
    Example:   ক (U+0995) + ্ (U+09CD) + ষ (U+09B7) = ক্ষ
 
 Zero-width characters
-   U+200C  ZWNJ — prevents conjunct formation when placed between
+   U+200C  ZWNJ - prevents conjunct formation when placed between
             consonant + virama + consonant.
-   U+200D  ZWJ  — forces conjunct or ligature formation.
+   U+200D  ZWJ  - forces conjunct or ligature formation.
 
 The BPE Tokenizer treats each code point as an indivisible atom.  It never
-attempts to form or split grapheme clusters — that is left to the caller if
+attempts to form or split grapheme clusters - that is left to the caller if
 needed (e.g. for display-width calculations).
 """
 
@@ -291,15 +291,15 @@ def corpus_unicode_stats(text: str) -> Dict[str, int]:
 
     Returns a dict with the following keys:
 
-    * ``total_chars``      — total code points (excluding nothing)
-    * ``bengali_chars``    — chars in U+0980-U+09FF
-    * ``latin_chars``      — ASCII a-z / A-Z
-    * ``digits``           — Unicode decimal digits (any script)
-    * ``whitespace``       — whitespace characters
-    * ``punctuation``      — Unicode punctuation characters
-    * ``combining_marks``  — combining diacritics (Mn / Mc / Me)
-    * ``zero_width_chars`` — ZWNJ + ZWJ + ZWSP
-    * ``unique_codepoints``— number of distinct code points seen
+    * ``total_chars``      - total code points (excluding nothing)
+    * ``bengali_chars``    - chars in U+0980-U+09FF
+    * ``latin_chars``      - ASCII a-z / A-Z
+    * ``digits``           - Unicode decimal digits (any script)
+    * ``whitespace``       - whitespace characters
+    * ``punctuation``      - Unicode punctuation characters
+    * ``combining_marks``  - combining diacritics (Mn / Mc / Me)
+    * ``zero_width_chars`` - ZWNJ + ZWJ + ZWSP
+    * ``unique_codepoints``- number of distinct code points seen
 
     Args:
         text: Corpus text.

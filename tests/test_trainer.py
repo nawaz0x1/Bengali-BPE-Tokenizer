@@ -1,4 +1,4 @@
-"""Tests for bpe.trainer — BPETrainer and BPEModel."""
+"""Tests for bpe.trainer - BPETrainer and BPEModel."""
 
 import sys
 from pathlib import Path
