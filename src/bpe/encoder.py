@@ -37,7 +37,7 @@ from functools import lru_cache
 from typing import Dict, List, Optional, Tuple
 
 from .unicode_utils import normalize, normalize_whitespace, pretokenize_words, split_chars
-from .vocabulary import UNK_TOKEN, Vocabulary
+from .vocabulary import Vocabulary
 
 logger = logging.getLogger(__name__)
 
