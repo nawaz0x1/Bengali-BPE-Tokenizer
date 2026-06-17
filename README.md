@@ -38,7 +38,7 @@ Its quality directly affects:
 Most popular Tokenizers were designed and evaluated on **English** and
 other Latin-script languages. Non-Latin scripts present unique challenges:
 
-1. **Multi-byte UTF-8 characters**: Bengali characters span 2–3 bytes.
+1. **Multi-byte UTF-8 characters**: Bengali characters span 2-3 bytes.
    Naively splitting at bytes produces nonsensical, non-linguistic fragments.
 
 2. **Character composition**: Many scripts have combining characters,
@@ -291,7 +291,7 @@ It never touches raw UTF-8 bytes. This means:
 - No byte-splitting that would break multi-byte characters.
 - All regex operations use `re.UNICODE` flag.
 
-### Bengali Unicode block (U+0980–U+09FF)
+### Bengali Unicode block (U+0980-U+09FF)
 
 | Code point     | Character | Description                                  |
 | -------------- | --------- | -------------------------------------------- |
@@ -300,8 +300,8 @@ It never touches raw UTF-8 bytes. This means:
 | U+0983 | ঃ | Visarga |
 | U+0981 | ঁ | Chandrabindu |
 | U+09BC | ় | Nukta |
-| U+09BE–U+09CC | া–ৌ | Dependent vowel signs |
-| U+09E6–U+09EF | ০–৯ | Bengali digits |
+| U+09BE-U+09CC | া-ৌ | Dependent vowel signs |
+| U+09E6-U+09EF | ০-৯ | Bengali digits |
 
 ### Conjuncts
 

@@ -8,22 +8,22 @@ split regardless of script.
 
 Bengali Unicode considerations
 ================================
-Bengali is encoded in the Unicode block **U+0980–U+09FF**. Key sub-ranges:
+Bengali is encoded in the Unicode block **U+0980-U+09FF**. Key sub-ranges:
 
 ===================  ========  ============================================
 Character type        Range     Notes
 ===================  ========  ============================================
-Independent vowels    0985–0994  স্বরবর্ণ
-Consonants            0995–09B9  ব্যঞ্জনবর্ণ
+Independent vowels    0985-0994  স্বরবর্ণ
+Consonants            0995-09B9  ব্যঞ্জনবর্ণ
 Nukta                 09BC       Modifies consonants (like "ড়" = ড + ়)
-Dependent vowels      09BE–09CC  কার (vowel signs attached to consonants)
+Dependent vowels      09BE-09CC  কার (vowel signs attached to consonants)
 Virama / Hasanta      09CD       ্ — suppresses the inherent /a/ vowel;
                                  consonant + virama + consonant = conjunct
 Anusvara              0982       ং (nasalisation)
 Visarga               0983       ঃ (aspiration)
 Chandrabindu          0981       ঁ (nasalised vowel)
 Khanda Ta             09CE       ৎ (final form of ত)
-Bengali digits        09E6–09EF  ০১২৩৪৫৬৭৮৯
+Bengali digits        09E6-09EF  ০১২৩৪৫৬৭৮৯
 ===================  ========  ============================================
 
 Conjuncts (যুক্তাক্ষর)
@@ -161,7 +161,7 @@ def remove_zero_width_chars(text: str) -> str:
 
 
 def is_bengali(char: str) -> bool:
-    """Return ``True`` if *char* is in the Bengali Unicode block (U+0980–U+09FF)."""
+    """Return ``True`` if *char* is in the Bengali Unicode block (U+0980-U+09FF)."""
     return BENGALI_BLOCK_START <= ord(char) <= BENGALI_BLOCK_END
 
 
@@ -193,7 +193,7 @@ def is_punctuation(char: str) -> bool:
 def is_digit(char: str) -> bool:
     """Return ``True`` if *char* is a Unicode decimal digit (category Nd).
 
-    This includes Bengali digits ০–৯ (U+09E6–U+09EF) as well as ASCII 0–9.
+    This includes Bengali digits ০-৯ (U+09E6-U+09EF) as well as ASCII 0-9.
     """
     return unicodedata.category(char) == "Nd"
 
@@ -292,8 +292,8 @@ def corpus_unicode_stats(text: str) -> Dict[str, int]:
     Returns a dict with the following keys:
 
     * ``total_chars``      — total code points (excluding nothing)
-    * ``bengali_chars``    — chars in U+0980–U+09FF
-    * ``latin_chars``      — ASCII a–z / A–Z
+    * ``bengali_chars``    — chars in U+0980-U+09FF
+    * ``latin_chars``      — ASCII a-z / A-Z
     * ``digits``           — Unicode decimal digits (any script)
     * ``whitespace``       — whitespace characters
     * ``punctuation``      — Unicode punctuation characters

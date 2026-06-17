@@ -186,8 +186,8 @@ def compression_ratio(original_words: int, token_count: int) -> float:
     produced *fewer* tokens than words (aggressive merging). A value close
     to 1 means little compression.
 
-    For a well-trained Bengali BPE model this is typically 1.5–3.0 (i.e.
-    each word is represented by 1.5–3 subword tokens on average).
+    For a well-trained Bengali BPE model this is typically 1.5-3.0 (i.e.
+    each word is represented by 1.5-3 subword tokens on average).
 
     Args:
         original_words: Number of whitespace-delimited words in the corpus.

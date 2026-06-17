@@ -23,7 +23,7 @@ Before BPE is applied, the corpus is split into **pre-tokens** (roughly
 For Bengali:
 
 - Split at ASCII whitespace, Bengali danda `।` (U+0964), double danda `॥` (U+0965).
-- Keep Bengali digits `০–৯` as separate units.
+- Keep Bengali digits `০-৯` as separate units.
 
 ### Phase 2 - Initial vocabulary
 
@@ -89,7 +89,7 @@ Decoding is simple:
 ### Unicode code points, not bytes
 
 This Tokenizer **never** operates on raw UTF-8 bytes. Bengali characters
-span 2–3 bytes in UTF-8 encoding, so byte-level operations would produce
+span 2-3 bytes in UTF-8 encoding, so byte-level operations would produce
 nonsensical sub-character tokens. Python's `str` type is a sequence of
 Unicode code points, so `list(text)` always gives the correct character split.
 
