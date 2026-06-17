@@ -123,7 +123,7 @@ class TestBPEEncoder:
         return BPEEncoder(vocabulary=vocab, merges=merges, end_of_word_suffix="</w>")
 
     def test_encode_abc(self, simple_encoder):
-        ids = simple_encoder.encode("abc")
+        simple_encoder.encode("abc")
         tokens = simple_encoder.tokenize("abc")
         # "abc" → ['abc</w>']  (merge a+b=ab, ab+c=abc, abc+</w>=abc</w>)
         assert "abc</w>" in tokens

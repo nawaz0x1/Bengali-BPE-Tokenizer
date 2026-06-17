@@ -9,23 +9,20 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 import pytest
 from bpe.unicode_utils import (
     BENGALI_VIRAMA,
-    normalize,
-    normalize_whitespace,
-    remove_zero_width_chars,
+    char_frequency,
+    corpus_unicode_stats,
     is_bengali,
     is_bengali_virama,
-    is_bengali_dependent_vowel,
     is_combining,
-    is_whitespace,
-    is_punctuation,
     is_digit,
+    is_whitespace,
+    normalize,
+    normalize_whitespace,
     pretokenize,
     pretokenize_words,
+    remove_zero_width_chars,
     split_chars,
-    corpus_unicode_stats,
-    char_frequency,
 )
-
 
 # ── normalize ─────────────────────────────────────────────────────────────────
 

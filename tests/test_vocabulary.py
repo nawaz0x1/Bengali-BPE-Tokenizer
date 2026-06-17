@@ -1,20 +1,18 @@
 """Tests for bpe.vocabulary."""
 
 import sys
-import json
-import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import pytest
 from bpe.vocabulary import (
-    Vocabulary,
+    BOS_TOKEN,
+    DEFAULT_SPECIAL_TOKENS,
+    EOS_TOKEN,
     PAD_TOKEN,
     UNK_TOKEN,
-    BOS_TOKEN,
-    EOS_TOKEN,
-    DEFAULT_SPECIAL_TOKENS,
+    Vocabulary,
 )
 
 
