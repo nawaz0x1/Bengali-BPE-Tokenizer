@@ -293,8 +293,8 @@ It never touches raw UTF-8 bytes. This means:
 
 ### Bengali Unicode block (U+0980–U+09FF)
 
-| Code point | Character | Description |
-| - | | -- |
+| Code point     | Character | Description                                  |
+| -------------- | --------- | -------------------------------------------- |
 | U+09CD | ্ | Virama / Hasanta — suppresses inherent vowel |
 | U+0982 | ং | Anusvara — nasalisation |
 | U+0983 | ঃ | Visarga |
@@ -324,8 +324,8 @@ tokenisation.
 
 ## Algorithm Complexity
 
-| Step | Time | Space |
-| | -- | |
+| Step                     | Time      | Space   |
+| ------------------------ | --------- | ------- |
 | Pre-tokenisation | O(N) | O(N) |
 | Initial vocab build | O(N) | O(C) |
 | Pair counting | O(W·L) | O(P) |
