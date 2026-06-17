@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.whl
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Output / trained models (keep directory, ignore contents)
+output/*
+!output/.gitkeep
+
+# Ruff / Black cache
+.ruff_cache/
+
+# macOS
+.DS_Store
+
+# Distribution
+*.tar.gz
+MANIFEST
