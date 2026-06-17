@@ -56,7 +56,7 @@ target-version = ["py39"]
 
 [tool.ruff]
 line-length = 99
-select = ["E", "F", "W", "I", "UP", "N"]
+select = ["E", "F", "W"]
 ignore = ["E501"]
 
 [tool.pytest.ini_options]

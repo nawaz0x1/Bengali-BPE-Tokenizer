@@ -15,7 +15,6 @@ Run ``python bpe.py <command> --help`` for per-command help.
 from __future__ import annotations
 
 import argparse
-import json
 import logging
 import sys
 from pathlib import Path
