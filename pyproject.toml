@@ -17,11 +17,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Text Processing :: Linguistic",
 ]
@@ -57,7 +53,7 @@ where = ["src"]
 
 [tool.black]
 line-length = 99
-target-version = ["py39", "py310", "py311", "py312", "py313", "py314"]
+target-version = ["py39", "py311"]
 
 [tool.ruff]
 line-length = 99
