@@ -72,7 +72,7 @@ def _ratio_label(our: int, theirs: int) -> str:
 # ── main benchmark ───────────────────────────────────────────────────────────
 def run_benchmark(corpus_path: Path, model_dir: Path):
     print("\n" + "═" * 62)
-    print("  Bengali BPE  vs  tiktoken  —  Benchmark")
+    print("  Bengali BPE  vs  tiktoken  -  Benchmark")
     print("═" * 62)
 
     # ── load corpus ──────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
     cl100k_cpr = char_count / cl100k_n
 
     print("\n" + "─" * 62)
-    print("  COMPRESSION RATIO  (chars per token — higher = better)")
+    print("  COMPRESSION RATIO  (chars per token - higher = better)")
     print("─" * 62)
     best_cpr = max(bpe_cpr, gpt2_cpr, cl100k_cpr)
     print(f"  Bengali-BPE  {bpe_cpr:>6.2f}  {_bar(bpe_cpr, best_cpr)}  (ours)")
@@ -146,7 +146,7 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
         spotlight = sorted_words[:15]
 
         print("\n" + "─" * 62)
-        print("  TOP-15 WORDS — GPT-2 TOKEN COUNT (worst cases for GPT-2)")
+        print("  TOP-15 WORDS - GPT-2 TOKEN COUNT (worst cases for GPT-2)")
         print("─" * 62)
         print(f"  {'Word':<22} {'Ours':>5}  {'GPT-2':>6}  {'GPT-4':>6}  Savings")
         print(f"  {'─'*22} {'─'*5}  {'─'*6}  {'─'*6}  {'─'*15}")
