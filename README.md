@@ -6,6 +6,24 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+## Results at a Glance
+
+> Trained on **3.4 billion characters** of Bengali text (CC-100 corpus).
+> Benchmarked against the tokenizers powering GPT-2 and GPT-4.
+
+![Benchmark — Bengali-BPE vs GPT-2 and GPT-4](docs/benchmark.png)
+
+| Metric | vs GPT-2 | vs GPT-4 |
+| ------ | :-------: | :-------: |
+| Fewer tokens on full corpus | **7.33×** | **4.50×** |
+| Higher compression ratio | **7.26×** | **4.48×** |
+| Fewer tokens per Bengali word | **6.71×** | **4.28×** |
+
+Words like `গুরুত্বপূর্ণ` and `বিশ্ববিদ্যালয়` cost **1 token** here, versus 29–30 with GPT-2.
+Shorter sequences mean lower inference cost, better use of context windows, and stronger
+model performance, the same quality of tokenisation that English has always had, now
+brought to **under-resourced languages**.
+
 ## What is Byte Pair Encoding?
 
 **Byte Pair Encoding (BPE)** is a subword tokenisation algorithm that sits
@@ -181,8 +199,8 @@ python benchmark.py
 ### From source (recommended)
 
 ```bash
-git clone https://github.com/your-org/bengali-bpe.git
-cd bengali-bpe
+git clone https://github.com/nawaz0x1/Bengali-BPE-Tokenizer.git
+cd Bengali-BPE-Tokenizer
 
 # Create a virtual environment
 python -m venv .venv
