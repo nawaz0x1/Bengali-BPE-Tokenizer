@@ -89,20 +89,20 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
 
     # ── load tokenizers ──────────────────────────────────────────────────────
     tok = BPETokenizer(str(model_dir))
-    enc_gpt2    = tiktoken.get_encoding("gpt2")
-    enc_cl100k  = tiktoken.get_encoding("cl100k_base")   # GPT-4 / ChatGPT
+    enc_gpt2 = tiktoken.get_encoding("gpt2")
+    enc_cl100k = tiktoken.get_encoding("cl100k_base")  # GPT-4 / ChatGPT
 
     print(f"\n  Bengali-BPE vocab size : {tok.vocab_size:,}")
     print(f"  GPT-2 vocab size       : {enc_gpt2.n_vocab:,}")
     print(f"  cl100k (GPT-4) vocab   : {enc_cl100k.n_vocab:,}")
 
     # ── full-corpus token counts ─────────────────────────────────────────────
-    bpe_ids    = tok.encode(text)
-    gpt2_ids   = _tokenize_tiktoken(enc_gpt2,   text)
+    bpe_ids = tok.encode(text)
+    gpt2_ids = _tokenize_tiktoken(enc_gpt2, text)
     cl100k_ids = _tokenize_tiktoken(enc_cl100k, text)
 
-    bpe_n    = len(bpe_ids)
-    gpt2_n   = len(gpt2_ids)
+    bpe_n = len(bpe_ids)
+    gpt2_n = len(gpt2_ids)
     cl100k_n = len(cl100k_ids)
 
     print("\n" + "─" * 62)
@@ -114,8 +114,8 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
     print(f"  cl100k/GPT-4 {cl100k_n:>7,}  {_bar(cl100k_n, best_n)}")
 
     # ── compression ratio (chars / tokens) ───────────────────────────────────
-    bpe_cpr    = char_count / bpe_n
-    gpt2_cpr   = char_count / gpt2_n
+    bpe_cpr = char_count / bpe_n
+    gpt2_cpr = char_count / gpt2_n
     cl100k_cpr = char_count / cl100k_n
 
     print("\n" + "─" * 62)
@@ -129,8 +129,8 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
     # ── average tokens per Bengali word ──────────────────────────────────────
     if unique_bengali:
         counts = _word_token_counts(tok, enc_gpt2, enc_cl100k, unique_bengali)
-        bpe_avg    = sum(v[0] for v in counts.values()) / len(counts)
-        gpt2_avg   = sum(v[1] for v in counts.values()) / len(counts)
+        bpe_avg = sum(v[0] for v in counts.values()) / len(counts)
+        gpt2_avg = sum(v[1] for v in counts.values()) / len(counts)
         cl100k_avg = sum(v[2] for v in counts.values()) / len(counts)
 
         print("\n" + "─" * 62)
@@ -151,8 +151,10 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
         print(f"  {'Word':<22} {'Ours':>5}  {'GPT-2':>6}  {'GPT-4':>6}  Savings")
         print(f"  {'─'*22} {'─'*5}  {'─'*6}  {'─'*6}  {'─'*15}")
         for word, (bpe_c, g2_c, cl_c) in spotlight:
-            print(f"  {word:<22} {bpe_c:>5}  {g2_c:>6}  {cl_c:>6}  "
-                  f"{_ratio_label(bpe_c, g2_c)} vs GPT-2")
+            print(
+                f"  {word:<22} {bpe_c:>5}  {g2_c:>6}  {cl_c:>6}  "
+                f"{_ratio_label(bpe_c, g2_c)} vs GPT-2"
+            )
 
     # ── summary ──────────────────────────────────────────────────────────────
     print("\n" + "═" * 62)
@@ -169,14 +171,18 @@ def run_benchmark(corpus_path: Path, model_dir: Path):
 # ── CLI ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(description="Benchmark Bengali BPE vs tiktoken")
-    parser.add_argument("--corpus", default="examples/corpus.txt",
-                        help="Path to UTF-8 corpus file (default: examples/corpus.txt)")
-    parser.add_argument("--model", default="output/",
-                        help="Path to trained model directory (default: output/)")
+    parser.add_argument(
+        "--corpus",
+        default="examples/corpus.txt",
+        help="Path to UTF-8 corpus file (default: examples/corpus.txt)",
+    )
+    parser.add_argument(
+        "--model", default="output/", help="Path to trained model directory (default: output/)"
+    )
     args = parser.parse_args()
 
     corpus_path = Path(args.corpus)
-    model_dir   = Path(args.model)
+    model_dir = Path(args.model)
 
     if not corpus_path.exists():
         sys.exit(f"Corpus not found: {corpus_path}")
