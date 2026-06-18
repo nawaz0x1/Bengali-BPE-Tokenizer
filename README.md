@@ -113,10 +113,7 @@ using the [CC-Net](https://github.com/facebookresearch/cc_net) pipeline.
 | Training time | 2 h 21 m 54 s |
 | Merge throughput | ~1.05 merges / s |
 
-> **Citation:** Conneau, A., Khandelwal, K., Goyal, N., Chaudhary, V., Wenzek, G.,
-> Guzmán, F., Grave, E., Ott, M., Zettlemoyer, L., & Stoyanov, V. (2020).
-> *Unsupervised Cross-lingual Representation Learning at Scale*. ACL 2020.
-> [arXiv:1911.02116](https://arxiv.org/abs/1911.02116)
+> Dataset source: [data.statmt.org/cc-100/](http://data.statmt.org/cc-100/) — see [[5]](#references) for citation.
 
 ## Benchmark: Bengali BPE vs tiktoken
 
