@@ -69,9 +69,59 @@ This project addresses the problem by training BPE **directly on Bengali
 text**, producing a vocabulary where common Bengali morphemes become single
 tokens.
 
+## Motivation: Better LLMs for Under-Resourced Languages
+
+Languages like Bengali have over 230 million native speakers yet remain
+**severely under-served** by existing LLM tokenizers. When an LLM trained
+primarily on English text is applied to Bengali, the tokenizer's vocabulary
+contains almost no Bengali subwords causing every word to fragment into
+dozens of meaningless byte-level tokens. This:
+
+- **Inflates sequence length**, filling context windows with noise.
+- **Raises inference cost**, since every extra token costs compute.
+- **Degrades model quality**, as the model must spend capacity reconstructing
+  characters rather than learning language.
+
+Training BPE directly on a large Bengali corpus gives the model a vocabulary
+where real morphemes become single tokens, the same advantage English enjoys
+by default.
+
+## Training Corpus
+
+The tokenizer was trained on the **CC-100 Bengali** dataset (`bn.txt`), a
+monolingual corpus extracted from January–December 2018 CommonCrawl snapshots
+using the [CC-Net](https://github.com/facebookresearch/cc_net) pipeline.
+
+| Property | Value |
+| -------- | ----- |
+| Dataset | CC-100 Bengali (`bn.txt.xz`) |
+| Source | [data.statmt.org/cc-100/](http://data.statmt.org/cc-100/) |
+| Corpus size | 3,479,160,474 characters |
+| Word count | 525,195,961 |
+| Unique word types (≥ min\_freq) | 1,659,662 |
+| Unicode codepoints seen | 6,116 |
+| Bengali characters | 2,794,501,647 |
+| Latin characters | 82,354,819 |
+
+**Training run summary**
+
+| Parameter | Value |
+| --------- | ----- |
+| Target vocabulary size | 8,000 |
+| Character vocabulary size | 3,737 |
+| Merge operations | 4,263 |
+| Training time | 2 h 21 m 54 s |
+| Merge throughput | ~1.05 merges / s |
+
+> **Citation:** Conneau, A., Khandelwal, K., Goyal, N., Chaudhary, V., Wenzek, G.,
+> Guzmán, F., Grave, E., Ott, M., Zettlemoyer, L., & Stoyanov, V. (2020).
+> *Unsupervised Cross-lingual Representation Learning at Scale*. ACL 2020.
+> [arXiv:1911.02116](https://arxiv.org/abs/1911.02116)
+
 ## Benchmark: Bengali BPE vs tiktoken
 
-Measured on `examples/corpus.txt` (3,795 chars, 427 Bengali words).
+Measured on `examples/corpus.txt` (3,795 chars, 523 words, 427 Bengali words,
+300 unique Bengali word types). Vocabulary trained on CC-100 Bengali (8,000 tokens).
 Reproduce with:
 
 ```bash
@@ -81,44 +131,53 @@ python benchmark.py
 
 ### Token count - full corpus (lower is better)
 
-| Tokenizer | Tokens | vs Bengali-BPE |
-| --------- | ------: | -------------- |
-| **Bengali-BPE (ours)** | **1,961** | - |
-| tiktoken cl100k / GPT-4 | 4,712 | 2.4× more |
-| tiktoken GPT-2 | 7,663 | 3.9× more |
+| Tokenizer | Vocab size | Tokens | vs Bengali-BPE |
+| --------- | ---------: | -----: | -------------- |
+| **Bengali-BPE (ours)** | **8,000** | **1,046** |  |
+| tiktoken cl100k / GPT-4 | 100,277 | 4,712 | 4.50× more |
+| tiktoken GPT-2 | 50,257 | 7,663 | 7.33× more |
 
 ### Compression ratio - chars per token (higher is better)
 
 | Tokenizer | Chars / token |
 | --------- | ------------: |
-| **Bengali-BPE (ours)** | **1.94** |
+| **Bengali-BPE (ours)** | **3.63** |
 | tiktoken cl100k / GPT-4 | 0.81 |
 | tiktoken GPT-2 | 0.50 |
 
 ### Average tokens per Bengali word (lower is better)
 
-| Tokenizer | Tokens / word |
-| --------- | ------------: |
-| **Bengali-BPE (ours)** | **4.57** |
-| tiktoken cl100k / GPT-4 | 8.71 |
-| tiktoken GPT-2 | 13.65 |
+| Tokenizer | Tokens / word | vs Bengali-BPE |
+| --------- | ------------: | -------------- |
+| **Bengali-BPE (ours)** | **2.03** |  |
+| tiktoken cl100k / GPT-4 | 8.71 | 4.28× more |
+| tiktoken GPT-2 | 13.65 | 6.71× more |
 
-### Word-level spotlight - worst cases for GPT-2
+### Word-level spotlight - top 15 worst cases for GPT-2
 
 | Bengali word | Bengali-BPE | GPT-2 | GPT-4 | Saving vs GPT-2 |
 | ------------ | ----------: | ----: | ----: | --------------- |
-| গুরুত্বপূর্ণ | **1** | 29 | 18 | **29× fewer** |
-| বিশ্ববিদ্যালয় | **1** | 30 | 18 | **30× fewer** |
-| উল্লেখযোগ্যভাবে | 12 | 35 | 22 | 2.9× fewer |
-| মুক্তিযুদ্ধের | 9 | 31 | 18 | 3.4× fewer |
-| গণপ্রজাতন্ত্রী | 12 | 32 | 19 | 2.7× fewer |
-| বিশ্বসাহিত্যে | 7 | 29 | 15 | 4.1× fewer |
-| সম্প্রদায়ের | 8 | 27 | 16 | 3.4× fewer |
+| উল্লেখযোগ্যভাবে | **4** | 35 | 22 | **8.75× fewer** |
+| প্রক্রিয়াকরণের | **5** | 33 | 20 | **6.60× fewer** |
+| গণপ্রজাতন্ত্রী | **4** | 32 | 19 | **8.00× fewer** |
+| মুক্তিযুদ্ধের | **2** | 31 | 18 | **15.50× fewer** |
+| শিক্ষাব্যবস্থা | **2** | 31 | 17 | **15.50× fewer** |
+| বিশ্ববিদ্যালয় | **1** | 30 | 18 | **30.00× fewer** |
+| শীর্ষস্থানীয় | **3** | 30 | 19 | **10.00× fewer** |
+| গুরুত্বপূর্ণ | **1** | 29 | 18 | **29.00× fewer** |
+| বিশ্বসাহিত্যে | **4** | 29 | 15 | **7.25× fewer** |
+| তাৎপর্যপূর্ণ | **4** | 28 | 17 | **7.00× fewer** |
+| মর্যাদাপূর্ণ | **4** | 27 | 14 | **6.75× fewer** |
+| সম্প্রদায়ের | **2** | 27 | 16 | **13.50× fewer** |
+| উচ্চশিক্ষায় | **3** | 26 | 16 | **8.67× fewer** |
+| রাষ্ট্রভাষার | **3** | 26 | 13 | **8.67× fewer** |
+| ট্রান্সফরমার | **5** | 26 | 15 | **5.20× fewer** |
 
-> **Takeaway:** Bengali-BPE uses **3.9× fewer tokens** than GPT-2 and **2.4× fewer**
-> than GPT-4 on the same Bengali corpus. Common words like `গুরুত্বপূর্ণ`
-> cost a single token instead of 29 - directly reducing context window
-> usage, inference cost, and sequence length for downstream models.
+> **Takeaway:** Bengali-BPE uses **7.33× fewer tokens** than GPT-2 and **4.50× fewer**
+> than GPT-4 on the full corpus. Per-word, it requires **6.71× fewer tokens** than
+> GPT-2 and **4.28× fewer** than GPT-4. Common words like `গুরুত্বপূর্ণ` and
+> `বিশ্ববিদ্যালয়` cost a single token instead of 29–30, directly reducing
+> context window usage, inference cost, and sequence length for downstream models.
 
 ## Installation
 
@@ -426,6 +485,18 @@ pytest tests/ -v
 
 4. Radford, A., et al. (2019). _Language Models are Unsupervised Multitask
    Learners_. (GPT-2 byte-level BPE).
+
+5. Conneau, A., Khandelwal, K., Goyal, N., Chaudhary, V., Wenzek, G.,
+   Guzmán, F., Grave, E., Ott, M., Zettlemoyer, L., & Stoyanov, V. (2020).
+   _Unsupervised Cross-lingual Representation Learning at Scale_. ACL 2020.
+   [arXiv:1911.02116](https://arxiv.org/abs/1911.02116)
+   _(Source of the CC-100 Bengali training corpus.)_
+
+6. Wenzek, G., Lachaux, M.-A., Conneau, A., Chaudhary, V., Guzmán, F.,
+   Joulin, A., & Grave, E. (2020). _CCNet: Extracting High Quality Monolingual
+   Datasets from Web Crawl Data_. LREC 2020.
+   [arXiv:1911.00359](https://arxiv.org/abs/1911.00359)
+   _(CC-Net pipeline used to build CC-100.)_
 
 ## License
 
