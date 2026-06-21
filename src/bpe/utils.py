@@ -14,7 +14,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Dict, Generator, List, Optional
 
-# ── Logging setup ─────────────────────────────────────────────────────────────
+# Logging setup
 
 _LOG_FORMAT = "%(asctime)s  %(levelname)-8s  %(name)s - %(message)s"
 _LOG_DATE_FORMAT = "%H:%M:%S"
@@ -33,9 +33,6 @@ def setup_logging(level: str = "INFO") -> None:
         format=_LOG_FORMAT,
         datefmt=_LOG_DATE_FORMAT,
     )
-
-
-# ── Timing ────────────────────────────────────────────────────────────────────
 
 
 @contextmanager
@@ -80,9 +77,7 @@ def format_duration(seconds: float) -> str:
     return f"{hours}h {mins:02d}m {secs:02d}s"
 
 
-# ── File I/O ──────────────────────────────────────────────────────────────────
-
-
+# File I/O
 def read_text_file(path: Path, encoding: str = "utf-8") -> str:
     """Read and return the full contents of a text file.
 
@@ -145,9 +140,7 @@ def save_json(obj: Any, path: Path, indent: int = 2) -> None:
         json.dump(obj, fh, ensure_ascii=False, indent=indent)
 
 
-# ── Corpus metrics ────────────────────────────────────────────────────────────
-
-
+# Corpus metrics
 def count_words(text: str) -> int:
     """Count whitespace-separated tokens in *text*.
 
@@ -201,9 +194,7 @@ def compression_ratio(original_words: int, token_count: int) -> float:
     return round(token_count / original_words, 4)
 
 
-# ── Pretty-printing helpers ───────────────────────────────────────────────────
-
-
+# Pretty-printing helpers
 def format_number(n: int) -> str:
     """Format *n* with thousands separators (e.g. ``1_234_567``)."""
     return f"{n:,}"
