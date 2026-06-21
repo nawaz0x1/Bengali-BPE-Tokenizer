@@ -26,17 +26,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Set, Tuple
 
-# ── Special tokens ────────────────────────────────────────────────────────────
-
+# Special tokens
 PAD_TOKEN: str = "<pad>"  # padding / ignored position
 UNK_TOKEN: str = "<unk>"  # unknown / out-of-vocabulary token
 BOS_TOKEN: str = "<bos>"  # beginning-of-sequence marker
 EOS_TOKEN: str = "<eos>"  # end-of-sequence marker
 
 DEFAULT_SPECIAL_TOKENS: List[str] = [PAD_TOKEN, UNK_TOKEN, BOS_TOKEN, EOS_TOKEN]
-
-
-# ── Vocabulary class ──────────────────────────────────────────────────────────
 
 
 @dataclass
@@ -60,8 +56,6 @@ class Vocabulary:
         elif self.id_to_token and not self.token_to_id:
             self.token_to_id = {v: k for k, v in self.id_to_token.items()}
 
-    # ── Construction helpers ──────────────────────────────────────────────────
-
     @classmethod
     def from_special_tokens(cls, special_tokens: Optional[List[str]] = None) -> "Vocabulary":
         """Create a :class:`Vocabulary` pre-populated with special tokens.
@@ -77,8 +71,6 @@ class Vocabulary:
         for tok in special_tokens or DEFAULT_SPECIAL_TOKENS:
             vocab.add_token(tok, special=True)
         return vocab
-
-    # ── Core API ──────────────────────────────────────────────────────────────
 
     def add_token(self, token: str, special: bool = False) -> int:
         """Add *token* to the vocabulary and return its integer ID.
@@ -125,8 +117,7 @@ class Vocabulary:
         """Number of tokens (including special tokens)."""
         return len(self.token_to_id)
 
-    # ── Named-token shortcuts ─────────────────────────────────────────────────
-
+    # Named-token shortcuts
     @property
     def unk_id(self) -> Optional[int]:
         """ID of the ``<unk>`` token, or ``None`` if not present."""
@@ -147,8 +138,7 @@ class Vocabulary:
         """ID of the ``<eos>`` token, or ``None`` if not present."""
         return self.token_to_id.get(EOS_TOKEN)
 
-    # ── Serialisation ─────────────────────────────────────────────────────────
-
+    # Serialisation
     def save(self, path: Path) -> None:
         """Serialise vocabulary to a UTF-8 JSON file.
 
@@ -188,8 +178,6 @@ class Vocabulary:
             id_to_token=id_to_token,
             special_tokens=special_tokens,
         )
-
-    # ── Statistics ────────────────────────────────────────────────────────────
 
     def token_length_stats(self) -> Dict[str, float]:
         """Compute statistics about token character lengths.

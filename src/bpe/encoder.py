@@ -41,12 +41,8 @@ from .vocabulary import Vocabulary
 
 logger = logging.getLogger(__name__)
 
-# ── Type alias ────────────────────────────────────────────────────────────────
 
 MergeRankMap = Dict[Tuple[str, str], int]
-
-
-# ── Encoder ───────────────────────────────────────────────────────────────────
 
 
 class BPEEncoder:
@@ -83,8 +79,6 @@ class BPEEncoder:
         # Word-level cache (bound method cannot use @lru_cache directly,
         # so we store a module-level cached function per instance)
         self._encode_word_cached = lru_cache(maxsize=cache_size)(self._encode_word_uncached)
-
-    # ── Public API ────────────────────────────────────────────────────────────
 
     def encode(self, text: str) -> List[int]:
         """Encode *text* into a list of token IDs.
@@ -169,8 +163,6 @@ class BPEEncoder:
 
         return trace
 
-    # ── Internal helpers ──────────────────────────────────────────────────────
-
     def _preprocess(self, text: str) -> str:
         """Apply normalisation consistent with training."""
         text = normalize(text, self._norm_form)
@@ -235,9 +227,6 @@ class BPEEncoder:
     def clear_cache(self) -> None:
         """Evict all cached word-level encodings."""
         self._encode_word_cached.cache_clear()
-
-
-# ── Free helper ───────────────────────────────────────────────────────────────
 
 
 def _merge_symbols(symbols: List[str], pair: Tuple[str, str]) -> List[str]:

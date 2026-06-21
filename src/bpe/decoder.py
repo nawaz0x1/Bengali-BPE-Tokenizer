@@ -45,8 +45,6 @@ class BPEDecoder:
         self._vocab = vocabulary
         self._eow = end_of_word_suffix
 
-    # ── Public API ────────────────────────────────────────────────────────────
-
     def decode(self, token_ids: List[int]) -> str:
         """Convert a list of token IDs back to a Unicode string.
 
@@ -72,8 +70,6 @@ class BPEDecoder:
         """
         filtered = [t for t in tokens if t not in self._vocab.special_tokens]
         return self._join(filtered)
-
-    # ── Internal helpers ──────────────────────────────────────────────────────
 
     def _ids_to_strings(self, token_ids: List[int]) -> List[str]:
         """Map integer IDs to token strings, skipping specials and unknowns.

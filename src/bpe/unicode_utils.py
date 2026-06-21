@@ -46,8 +46,7 @@ import re
 import unicodedata
 from typing import Dict, Iterator, List, Set
 
-# ── Bengali Unicode block ─────────────────────────────────────────────────────
-
+# Bengali Unicode block
 BENGALI_BLOCK_START: int = 0x0980
 BENGALI_BLOCK_END: int = 0x09FF
 
@@ -86,8 +85,6 @@ BENGALI_DEPENDENT_VOWELS: frozenset[str] = frozenset(
 _SPACE_CATEGORIES: frozenset[str] = frozenset({"Zs", "Zl", "Zp"})
 _PUNCT_CATEGORIES: frozenset[str] = frozenset({"Po", "Ps", "Pe", "Pi", "Pf", "Pd", "Pc"})
 _COMBINING_CATEGORIES: frozenset[str] = frozenset({"Mn", "Mc", "Me"})
-
-# ── Normalisation ─────────────────────────────────────────────────────────────
 
 
 def normalize(text: str, form: str = "NFC") -> str:
@@ -157,9 +154,6 @@ def remove_zero_width_chars(text: str) -> str:
     )
 
 
-# ── Character classification ──────────────────────────────────────────────────
-
-
 def is_bengali(char: str) -> bool:
     """Return ``True`` if *char* is in the Bengali Unicode block (U+0980-U+09FF)."""
     return BENGALI_BLOCK_START <= ord(char) <= BENGALI_BLOCK_END
@@ -198,7 +192,7 @@ def is_digit(char: str) -> bool:
     return unicodedata.category(char) == "Nd"
 
 
-# ── Pre-tokenisation ──────────────────────────────────────────────────────────
+# Pre-tokenisation
 
 # This regex splits text into meaningful units.
 # Order matters: more-specific patterns come before \S+.
@@ -254,9 +248,6 @@ def pretokenize_words(text: str) -> List[str]:
     return [t for t in pretokenize(text) if not t.isspace()]
 
 
-# ── Character-level splitting ─────────────────────────────────────────────────
-
-
 def split_chars(text: str) -> List[str]:
     """Split a string into individual Unicode code points.
 
@@ -281,9 +272,6 @@ def split_chars(text: str) -> List[str]:
 def iter_chars(text: str) -> Iterator[str]:
     """Iterate over Unicode code points in *text* one at a time."""
     yield from text
-
-
-# ── Unicode statistics ────────────────────────────────────────────────────────
 
 
 def corpus_unicode_stats(text: str) -> Dict[str, int]:

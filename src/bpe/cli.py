@@ -37,11 +37,6 @@ from .utils import (
 logger = logging.getLogger(__name__)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Argument parser construction
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def _build_parser() -> argparse.ArgumentParser:
     """Construct the top-level argument parser with all sub-commands."""
 
@@ -277,11 +272,6 @@ def _add_inspect_parser(sub: argparse._SubParsersAction) -> None:  # type: ignor
     )
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Sub-command handlers
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def _cmd_train(args: argparse.Namespace) -> None:
     """Handler for the ``train`` sub-command."""
     corpus_path = Path(args.file)
@@ -368,7 +358,6 @@ def _cmd_stats(args: argparse.Namespace) -> None:
 
     print_banner(f"Model Statistics - {model_dir.resolve()}")
 
-    # ── Basic info ────────────────────────────────────────────────────────────
     print("\n  TRAINING CONFIGURATION")
     print(f"    Language           : {model.config.language}")
     print(f"    Normalisation      : {model.config.normalization}")
@@ -404,7 +393,7 @@ def _cmd_stats(args: argparse.Namespace) -> None:
         print(f"    Zero-width chars   : {format_number(us.get('zero_width_chars', 0))}")
         print(f"    Unique codepoints  : {format_number(us.get('unique_codepoints', 0))}")
 
-    # ── Top merges ────────────────────────────────────────────────────────────
+    # Top merges
     n_merges = args.top_merges
     history = model.merge_freq_history[:n_merges]
     if history:
@@ -414,7 +403,7 @@ def _cmd_stats(args: argparse.Namespace) -> None:
         for rank, ((left, right), freq) in enumerate(history, 1):
             print(f"    {rank:<6} {left:<20} {right:<20} {format_number(freq):>10}")
 
-    # ── Corpus-level compression stats ────────────────────────────────────────
+    # Corpus-level compression stats
     if args.corpus_file:
         corpus_path = Path(args.corpus_file)
         if not corpus_path.exists():
@@ -439,13 +428,11 @@ def _cmd_stats(args: argparse.Namespace) -> None:
             print(f"    Tokens / sentence  : {avg_per_sent:.2f}")
             print(f"    Compression ratio  : {ratio:.4f}")
 
-    # ── Optional CSV export ───────────────────────────────────────────────────
     if args.export_csv:
         csv_path = model_dir / "vocab.csv"
         model.vocabulary.export_csv(csv_path)
         print(f"\n  Vocabulary exported → {csv_path}")
 
-    # ── Optional merge-frequency plot ─────────────────────────────────────────
     if args.plot:
         _plot_merge_frequencies(model)
 
@@ -480,11 +467,6 @@ def _cmd_inspect(args: argparse.Namespace) -> None:
     print(f"  Merge steps  : {len(trace) - 1}")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Optional visualisation
-# ─────────────────────────────────────────────────────────────────────────────
-
-
 def _plot_merge_frequencies(model: BPEModel) -> None:
     """Plot the frequency of merged pairs over training iterations."""
     try:
@@ -505,11 +487,6 @@ def _plot_merge_frequencies(model: BPEModel) -> None:
     plt.title(f"BPE Merge Frequency - {model.config.language}")
     plt.tight_layout()
     plt.show()
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Entry point
-# ─────────────────────────────────────────────────────────────────────────────
 
 
 def _die(message: str) -> NoReturn:

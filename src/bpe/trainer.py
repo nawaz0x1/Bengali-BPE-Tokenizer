@@ -57,7 +57,7 @@ from .vocabulary import DEFAULT_SPECIAL_TOKENS, Vocabulary
 
 logger = logging.getLogger(__name__)
 
-# ── Type aliases ──────────────────────────────────────────────────────────────
+# Type aliases
 
 #: A word represented as an immutable tuple of BPE symbols.
 Word = Tuple[str, ...]
@@ -70,9 +70,6 @@ PairFreqDict = Dict[Tuple[str, str], int]
 
 #: Ordered list of merge rules produced by training.
 MergeList = List[Tuple[str, str]]
-
-
-# ── Training configuration ────────────────────────────────────────────────────
 
 
 @dataclass
@@ -114,9 +111,6 @@ class TrainerConfig:
     seed: int = 42
 
 
-# ── Trained model artefact ────────────────────────────────────────────────────
-
-
 @dataclass
 class BPEModel:
     """Container for a trained BPE model.
@@ -143,8 +137,7 @@ class BPEModel:
     corpus_size: int
     unicode_stats: Dict[str, int]
 
-    # ── Persistence ───────────────────────────────────────────────────────────
-
+    # Persistence
     def save(self, output_dir: Path) -> None:
         """Persist model to *output_dir*.
 
@@ -274,9 +267,6 @@ class BPEModel:
         )
 
 
-# ── BPE Trainer ───────────────────────────────────────────────────────────────
-
-
 class BPETrainer:
     """Trains a Byte Pair Encoding model from a raw text corpus.
 
@@ -299,8 +289,6 @@ class BPETrainer:
         self.merges: MergeList = []
         self._merge_freq_history: List[Tuple[Tuple[str, str], int]] = []
 
-    # ── Public API ────────────────────────────────────────────────────────────
-
     def train(self, text: str) -> BPEModel:
         """Run BPE training on *text*.
 
@@ -313,11 +301,11 @@ class BPETrainer:
         start_time = time.perf_counter()
         logger.info("BPE training started  (target vocab size: %d)", self.config.vocab_size)
 
-        # ── Step 1: normalise ─────────────────────────────────────────────────
+        # Step 1: normalise
         text = self._normalize_text(text)
         logger.info("Corpus length after normalisation: %d characters", len(text))
 
-        # ── Step 2: Unicode statistics ────────────────────────────────────────
+        # Step 2: Unicode statistics
         unicode_stats = corpus_unicode_stats(text)
         logger.info(
             "Unicode stats - Bengali: %d, Latin: %d, Unique codepoints: %d",
@@ -326,21 +314,21 @@ class BPETrainer:
             unicode_stats["unique_codepoints"],
         )
 
-        # ── Step 3: word frequencies ──────────────────────────────────────────
+        # Step 3: word frequencies
         word_freqs = self._build_word_freq(text)
         logger.info("Unique word types (≥ min_freq): %d", len(word_freqs))
 
-        # ── Step 4: initialise character vocabulary ───────────────────────────
+        # Step 4: initialise character vocabulary
         self._init_char_vocab(word_freqs)
         logger.info("Character vocabulary size: %d", len(self.vocabulary))
 
-        # ── Step 5: convert words to symbol sequences ─────────────────────────
+        # Step 5: convert words to symbol sequences
         word_syms: WordFreqDict = self._words_to_symbol_seqs(word_freqs)
 
-        # ── Step 6: initial pair counts ───────────────────────────────────────
+        # Step 6: initial pair counts
         pair_freqs: PairFreqDict = self._count_pairs(word_syms)
 
-        # ── Step 7: iterative merge ───────────────────────────────────────────
+        # Step 7: iterative merge
         merges_needed = self.config.vocab_size - len(self.vocabulary)
         logger.info("Merges needed: %d", merges_needed)
 
@@ -402,8 +390,6 @@ class BPETrainer:
             corpus_size=len(text),
             unicode_stats=unicode_stats,
         )
-
-    # ── Internal helpers ──────────────────────────────────────────────────────
 
     def _normalize_text(self, text: str) -> str:
         """Apply configured Unicode normalisation and optional whitespace collapse."""
@@ -545,14 +531,14 @@ class BPETrainer:
                 new_vocab[symbols] = new_vocab.get(symbols, 0) + freq
                 continue
 
-            # ── Subtract old pair contributions ───────────────────────────────
+            # Subtract old pair contributions
             for i in range(len(symbols) - 1):
                 old_p = (symbols[i], symbols[i + 1])
                 pair_freqs[old_p] = pair_freqs.get(old_p, 0) - freq
                 if pair_freqs[old_p] <= 0:
                     pair_freqs.pop(old_p, None)
 
-            # ── Build merged sequence ─────────────────────────────────────────
+            # Build merged sequence
             new_syms: List[str] = []
             i = 0
             while i < len(symbols):
@@ -564,7 +550,7 @@ class BPETrainer:
                     i += 1
             new_sym_tuple: Word = tuple(new_syms)
 
-            # ── Add new pair contributions ────────────────────────────────────
+            # Add new pair contributions
             for i in range(len(new_sym_tuple) - 1):
                 new_p = (new_sym_tuple[i], new_sym_tuple[i + 1])
                 pair_freqs[new_p] = pair_freqs.get(new_p, 0) + freq
@@ -572,9 +558,6 @@ class BPETrainer:
             new_vocab[new_sym_tuple] = new_vocab.get(new_sym_tuple, 0) + freq
 
         return new_vocab, pair_freqs
-
-
-# ── Private helpers ───────────────────────────────────────────────────────────
 
 
 def _fmt_time(seconds: float) -> str:

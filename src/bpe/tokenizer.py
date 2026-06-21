@@ -58,8 +58,6 @@ class BPETokenizer:
             end_of_word_suffix=cfg.end_of_word_suffix,
         )
 
-    # ── Core API ──────────────────────────────────────────────────────────────
-
     @property
     def vocab_size(self) -> int:
         """Total number of tokens in the vocabulary."""
@@ -140,8 +138,6 @@ class BPETokenizer:
             List of integer IDs (``None`` for unknown tokens).
         """
         return [self.model.vocabulary.get_id(t) for t in tokens]
-
-    # ── Inspection ────────────────────────────────────────────────────────────
 
     def inspect(self, word: str) -> List[Tuple[List[str], Optional[Tuple[str, str]]]]:
         """Trace the step-by-step BPE merge sequence for *word*.
