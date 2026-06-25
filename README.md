@@ -19,7 +19,7 @@
 | Higher compression ratio | **7.26×** | **4.48×** |
 | Fewer tokens per Bengali word | **6.71×** | **4.28×** |
 
-Words like `গুরুত্বপূর্ণ` and `বিশ্ববিদ্যালয়` cost **1 token** here, versus 29–30 with GPT-2.
+Words like `গুরুত্বপূর্ণ` and `বিশ্ববিদ্যালয়` cost **1 token** here, versus 29-30 with GPT-2.
 Shorter sequences mean lower inference cost, better use of context windows, and stronger
 model performance, the same quality of tokenisation that English has always had, now
 brought to **under-resourced languages**.
@@ -397,6 +397,12 @@ bengali-bpe/
 │
 ├── docs/
 │   └── algorithm.md           # Algorithm documentation
+│
+├── fertility_aware_tokenizer/
+│   ├── fertility_research.ipynb   # Fertility analysis notebook
+│   ├── bpe_merge_summary.json     # BPE merge statistics
+│   ├── tokenizer_comparison.csv   # Tokenizer comparison data
+│   └── figures/                   # Generated plots and figures
 │
 └── tests/
     ├── test_unicode_utils.py
